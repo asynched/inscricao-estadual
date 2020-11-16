@@ -416,6 +416,65 @@ const validateIE = (ie, uf) => {
                 else return false;
             } else return false;
 
+        // Paraná
+        case 'PR':
+            if(ie.length == 10){
+                let numeros = ie.substring(0, 8);
+                let pesos = [3, 2, 7, 6, 5, 4, 3, 2];
+                let soma = 0;
+                for(let i=0; i<pesos.length; i++){
+                    soma += +numeros[i] * pesos[i];
+                }
+
+                let resto = 11 - (soma % 11);
+                let primeiroDigitoVerificador
+                if(resto==10 || resto == 11) primeiroDigitoVerificador = 0;
+                else primeiroDigitoVerificador = resto;
+                
+                numeros += primeiroDigitoVerificador;
+                pesos = [4, 3, 2, 7, 6, 5, 4, 3, 2];
+                soma = 0;
+                for(let i=0; i<pesos.length; i++){
+                    soma += +numeros[i] * pesos[i];
+                }
+                resto = 11 - (soma % 11);
+                let segundoDigitoVerificador;
+                if(resto==10 || resto == 11) segundoDigitoVerificador = 0;
+                else segundoDigitoVerificador = resto;
+                if(primeiroDigitoVerificador == ie[8] && segundoDigitoVerificador == ie[9]) return true;
+                else return false;
+            } else return false;
+
+        
+        // Pernambuco
+        case 'PE':
+            if(ie.length == 9){
+                let numeros = ie.substring(0, 7);
+                let pesos = [8, 7, 6, 5, 4, 3, 2];
+                let soma = 0;
+                for(let i=0; i<pesos.length; i++){
+                    soma += +numeros[i] * pesos[i];
+                }
+
+                let resto = soma % 11;
+                if(resto == 1 || resto == 0) primeiroDigitoVerificador = 0;
+                else primeiroDigitoVerificador = 11 - resto;
+
+                numeros += primeiroDigitoVerificador;
+                pesos = [9, 8, 7, 6, 5, 4, 3, 2];
+                soma = 0;
+                for(let i=0; i<pesos.length; i++){
+                    soma += +numeros[i] * pesos[i];
+                }
+                resto = 11 - (soma % 11);
+                let segundoDigitoVerificador;
+                if(resto==10 || resto == 11) segundoDigitoVerificador = 0;
+                else segundoDigitoVerificador = resto;
+                if(primeiroDigitoVerificador == ie[7] && segundoDigitoVerificador == ie[8]) return true;
+                else return false;
+
+            } else return false;
+
         // Padrão
         default:
             return ie;
@@ -481,6 +540,14 @@ const formatIE = (ie, uf) => {
         case 'PB':
             return `${ie.substring(0, 8)}-${ie.substring(8, 9)}`;
 
+        // Paraná
+        case 'PR':
+            return `${ie.substring(0, 3)}.${ie.substring(3, 8)}-${ie.substring(8, 10)}`
+
+        // Pernambuco
+        case 'PE':
+            return `${ie.substring(0, 7)}-${ie.substring(7, 9)}`;
+
         // Padrão
         default:
             return ie;
@@ -495,4 +562,4 @@ const validateAndFormatIE = (ie, uf) => {
     }
 }
 
-console.log(validateAndFormatIE('721157041', 'PB'));
+console.log(validateAndFormatIE('612231313', 'PE'));
