@@ -292,6 +292,130 @@ const validateIE = (ie, uf) => {
                 else return false;
             } else return false;
 
+
+        // Mato Grosso
+        case 'MT':
+            if(ie.length == 11){
+                // Calcula o digito verificador
+                let numeros = ie.substring(0, 10);
+                let pesos = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                let soma = 0;
+                for(let i=0; i<pesos.length; i++){
+                    soma += +numeros[i] * pesos[i]
+                }
+
+                let resto = soma%11;
+                if(resto==0 || resto==1) digitoVerificador = 0
+                else digitoVerificador = 11 - resto;
+
+                // Confere o digito verificador
+                if(ie[10]==digitoVerificador) return true;
+                else return false;
+            } else return false;
+
+        // Mato Grosso do Sul
+        case 'MS':
+            if(ie.length == 9 && ie.substring(0, 2) == '28'){
+                // Calcula o digito verificador
+                let numeros = ie.substring(0, 8);
+                let pesos = [9, 8, 7, 6, 5, 4, 3, 2];
+                let soma = 0;
+                for(let i=0; i<pesos.length; i++){
+                    soma += numeros[i] * pesos[i]
+                }
+
+                let resto = soma%11;
+
+                let digitoVerificador = 0;
+                if(resto==0){}
+                
+                let t = 11 - resto
+                if(t>9) digitoVerificador = 0;
+                else digitoVerificador = t;
+
+                // Confere o digito verificador
+                if(ie[8]==digitoVerificador) return true;
+                else return false;
+            } else return false;
+
+        case 'MG':
+            if(ie.length == 13){
+                // Calculando o primeiro digito verificador
+                let numeros = `${ie.substring(0, 3)}0${ie.substring(3, 12)}`;
+                let pesos = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+                let lista = []
+                for(let i=0; i<pesos.length; i++){
+                    let numero = ''+(+numeros[i] * pesos[i]);
+                    numero = numero.split('');
+                    for(n of numero){
+                        lista.push(n);
+                    }
+                }
+
+                let total = lista.reduce((total, next) => parseInt(total) + parseInt(next));
+
+                let dezena = total
+                while(true){
+                    if(dezena%10==0){
+                        break;
+                    } else dezena++;
+                }
+
+                let primeiroDigitoVerificador = dezena - total;
+
+                // Calculando o segundo digito verificador
+                numeros = ie.substring(0, 12)
+                pesos = [3, 2, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
+                soma = 0;
+
+                for(let i=0; i<pesos.length; i++){
+                    soma += numeros[i] * pesos[i]
+                }
+
+                let resto = 11 - (soma % 11);
+                let segundoDigitoVerificador = resto
+                
+                // Comparando com o digito verificador
+                if(ie[11] == primeiroDigitoVerificador && ie[12] == segundoDigitoVerificador) return true;
+                else return false;
+            } else return false;
+
+        // Pará
+        case 'PA':
+            if(ie.length == 9 && ie.substring(0, 2) == '15'){
+                let numeros = ie.substring(0, 8);
+                let pesos = [9, 8, 7, 6, 5, 4, 3, 2];
+                let soma = 0;
+                for(let i=0; i<pesos.length; i++){
+                    soma += numeros[i] * pesos[i];
+                }
+
+                let resto = soma%11;
+                if(resto == 0 || resto == 1) digitoVerificador = 0;
+                else digitoVerificador = 11 - resto
+
+                if(ie[8] == digitoVerificador) return true;
+                else return false;
+            } else return false;
+
+        // Paraíba
+        case 'PB':
+            if(ie.length == 9){
+                let numeros = ie.substring(0, 8)
+                let pesos = [9, 8, 7, 6, 5, 4, 3, 2];
+                let soma = 0;
+                for(let i=0; i<pesos.length; i++){
+                    soma += +numeros[i] * pesos[i];
+                }
+
+                let resto = 11-(soma%11);
+                if(resto == 11 || resto == 10) digitoVerificador = 0;
+                else digitoVerificador = resto;
+
+                if(ie[8] == digitoVerificador) return true
+                else return false;
+            } else return false;
+
         // Padrão
         default:
             return ie;
@@ -333,8 +457,28 @@ const formatIE = (ie, uf) => {
         case 'GO':
             return `${ie.substring(0, 2)}.${ie.substring(2, 5)}.${ie.substring(5, 8)}-${ie.substring(8, 9)}`;
 
-        // Maranhã
+        // Maranhão
         case 'MA':
+            return `${ie.substring(0, 8)}-${ie.substring(8, 9)}`;
+
+        // Mato-Grosso
+        case 'MT':
+            return `${ie.substring(0, 10)}-${ie.substring(10, 11)}`
+
+        // Mato Grosso do Sul
+        case 'MS':
+            return `${ie.substring(0, 8)}-${ie.substring(8, 9)}`;
+
+        // Minas Gerais
+        case 'MG':
+            return `${ie.substring(0, 3)}.${ie.substring(3, 6)}.${ie.substring(6, 9)}/${ie.substring(9, 13)}`;
+
+        // Pará
+        case 'PA':
+            return `${ie.substring(0, 2)}-${ie.substring(2, 8)}-${ie.substring(8, 9)}`;
+
+        // Paraíba
+        case 'PB':
             return `${ie.substring(0, 8)}-${ie.substring(8, 9)}`;
 
         // Padrão
@@ -351,4 +495,4 @@ const validateAndFormatIE = (ie, uf) => {
     }
 }
 
-console.log(validateAndFormatIE('129887196', 'MA'));
+console.log(validateAndFormatIE('721157041', 'PB'));
