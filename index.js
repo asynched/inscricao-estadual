@@ -218,6 +218,63 @@ const validateIE = (ie, uf) => {
                 if(primeiroDigitoVerificador == 10 || primeiroDigitoVerificador == 11) primeiroDigitoVerificador = 0;
             } else return false;
 
+        // Espirito Santo
+        case 'ES':
+            if(ie.length == 9){
+                // Calcula o digito verificador
+                let numeros = ie.substring(0, 8);
+                let pesos = [9, 8, 7, 6, 5, 4, 3, 2];
+                let soma = 0
+                for(let i=0; i<8; i++){
+                    soma += +numeros[i] * pesos[i];
+                }
+                let resto = soma % 11;
+                let digitoVerificador = 0
+                if(resto>=2) digitoVerificador = 11 - resto;
+
+                // Confere o digito verificador
+                if(ie[8] == digitoVerificador) return true;
+                else return false;
+
+            } else return false;
+    
+        // Goiás
+        case 'GO':
+            if(ie.length==9){
+                let primeirosDigitos = ie.substring(0, 2);
+                if(primeirosDigitos == 10
+                    || primeirosDigitos == 11
+                    || primeirosDigitos == 15){
+                        let numeros = ie.substring(0, 8);
+                        let pesos = [9, 8, 7, 6, 5, 4, 3, 2]
+                        let soma = 0;
+                        for(let i=0; i<pesos.length; i++){
+                            soma += numeros[i] * pesos[i];
+                        }
+
+                        let resto = soma % 11
+                        if(numeros == '11094402'){
+                            //TODO
+                        }
+
+                        console.log(resto, soma);
+
+                        let digitoVerificador = 0;
+
+                        if(resto == 0) digitoVerificador = 0;
+                        else if(resto == 1 && numeros>=10103105 && numeros<=10119997) digitoVerificador = 1;
+                        else if(resto == 1) digitoVerificador = 0;
+                        else if(resto != 1 && resto != 0 && numeros<10103105 && numeros>101119997) digitoVerificador = 11 - resto;
+
+                        console.log(digitoVerificador)
+
+                        // Conferindo os digitos verificadores
+                        if(ie[8] == digitoVerificador) return true;
+                        else return false;
+
+                } else return false
+            } else return false;
+
         // Padrão
         default:
             return ie;
@@ -247,6 +304,19 @@ const formatIE = (ie, uf) => {
         case 'CE':
             return `${ie.substring(0, 8)}-${ie.substring(8, 9)}`
 
+        // Destrito Federal
+        case 'DF':
+            return `${ie.substring(0, 11)}-${ie.substring(11, 13)}`
+
+        // Espirito Santo
+        case 'ES':
+            return `${ie.substring(0, 8)}-${ie.substring(8, 9)}`;
+
+        // Goiás
+        case 'GO':
+            //TODO
+            return `${ie.substring(0, 2)}.${ie.substring(2, 5)}.${ie.substring(5, 8)}-${ie.substring(8, 9)}`;
+
         // Padrão
         default:
             return ie;
@@ -260,3 +330,5 @@ const validateAndFormatIE = (ie, uf) => {
         return false;
     }
 }
+
+console.log(validateIE('109876547', 'GO'));
