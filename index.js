@@ -182,6 +182,42 @@ const validateIE = (ie, uf) => {
                 }
             } else return false;
 
+        // Ceará
+        case 'CE':
+            if(ie.length==9){
+                let numeros = ie.substring(0, 8);
+                let pesos = [9, 8, 7, 6, 5, 4, 3, 2];
+                let soma = 0
+                for(let i=0; i<pesos.length; i++){
+                    soma += +numeros[i] * pesos[i];
+                }
+
+                let resto = soma % 11;
+
+                console.log(soma, resto);
+
+                let digitoVerificador = 0
+                if(resto!=10 || resto!=11) digitoVerificador = 11 - resto;
+                if(ie[8] == digitoVerificador) return true;
+                else return false;
+
+            } else return false;
+
+        // Destrito Federal
+        case 'DF':
+            if(ie.length==13){
+                // Calculando o primeiro digito verificador
+                let numeros = ie.substring(0, 11)
+                let pesos = [4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                let soma = 0
+                for(let i=0; i<pesos.length; i++){
+                    soma += +numeros[i] * pesos[i];
+                }
+                let resto = soma % 11;
+                let primeiroDigitoVerificador = 11 - resto
+                if(primeiroDigitoVerificador == 10 || primeiroDigitoVerificador == 11) primeiroDigitoVerificador = 0;
+            } else return false;
+
         // Padrão
         default:
             return ie;
@@ -198,12 +234,18 @@ const formatIE = (ie, uf) => {
         case 'AL':
             return ie;
 
+        // Amazonas
         case 'AM':
             return `${ie.substring(0, 2)}.${ie.substring(2, 5)}.${ie.substring(5, 8)}-${ie.substring(8, 9)}`;
 
+        // Bahia
         case 'BA':
             if(ie.length==8) return `${ie.substring(0, 6)}-${ie.substring(6, 8)}`;
             else return `${ie.substring(0, 7)}-${ie.substring(7, 9)}`;
+
+        // Ceará
+        case 'CE':
+            return `${ie.substring(0, 8)}-${ie.substring(8, 9)}`
 
         // Padrão
         default:
