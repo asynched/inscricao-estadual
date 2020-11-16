@@ -136,7 +136,7 @@ const validateIE = (ie, uf) => {
 
                     // Calculando o primeiro digito verificador
                     pesos = [8, 7, 6, 5, 4, 3, 2];
-                    numeros = ie.substring(0, 6) + ie.substring(7, 8);
+                    let numeros = ie.substring(0, 6) + ie.substring(7, 8);
                     soma = 0;
                     for(let i=0; i<pesos.length; i++){
                         soma += numeros[i] * pesos[i];
@@ -217,6 +217,7 @@ const validateIE = (ie, uf) => {
                 let primeiroDigitoVerificador = 11 - resto
                 if(primeiroDigitoVerificador == 10 || primeiroDigitoVerificador == 11) primeiroDigitoVerificador = 0;
             } else return false;
+            break;
 
         // Espirito Santo
         case 'ES':
@@ -237,7 +238,7 @@ const validateIE = (ie, uf) => {
                 else return false;
 
             } else return false;
-    
+
         // Goiás
         case 'GO':
             if(ie.length==9){
@@ -347,7 +348,7 @@ const validateIE = (ie, uf) => {
                 for(let i=0; i<pesos.length; i++){
                     let numero = ''+(+numeros[i] * pesos[i]);
                     numero = numero.split('');
-                    for(n of numero){
+                    for(let n of numero){
                         lista.push(n);
                     }
                 }
@@ -366,7 +367,7 @@ const validateIE = (ie, uf) => {
                 // Calculando o segundo digito verificador
                 numeros = ie.substring(0, 12)
                 pesos = [3, 2, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
-                soma = 0;
+                let soma = 0;
 
                 for(let i=0; i<pesos.length; i++){
                     soma += numeros[i] * pesos[i]
@@ -383,6 +384,7 @@ const validateIE = (ie, uf) => {
         // Pará
         case 'PA':
             if(ie.length == 9 && ie.substring(0, 2) == '15'){
+                // Calculando o digito verificador
                 let numeros = ie.substring(0, 8);
                 let pesos = [9, 8, 7, 6, 5, 4, 3, 2];
                 let soma = 0;
@@ -390,6 +392,7 @@ const validateIE = (ie, uf) => {
                     soma += numeros[i] * pesos[i];
                 }
 
+                // Comparando o digito verificador
                 let resto = soma%11;
                 if(resto == 0 || resto == 1) digitoVerificador = 0;
                 else digitoVerificador = 11 - resto
@@ -401,6 +404,7 @@ const validateIE = (ie, uf) => {
         // Paraíba
         case 'PB':
             if(ie.length == 9){
+                // Calculando o digito verificador
                 let numeros = ie.substring(0, 8)
                 let pesos = [9, 8, 7, 6, 5, 4, 3, 2];
                 let soma = 0;
@@ -412,6 +416,7 @@ const validateIE = (ie, uf) => {
                 if(resto == 11 || resto == 10) digitoVerificador = 0;
                 else digitoVerificador = resto;
 
+                // Comparando o digito verificador
                 if(ie[8] == digitoVerificador) return true
                 else return false;
             } else return false;
@@ -419,6 +424,7 @@ const validateIE = (ie, uf) => {
         // Paraná
         case 'PR':
             if(ie.length == 10){
+                // Calculando o primeiro digito verificador
                 let numeros = ie.substring(0, 8);
                 let pesos = [3, 2, 7, 6, 5, 4, 3, 2];
                 let soma = 0;
@@ -431,6 +437,7 @@ const validateIE = (ie, uf) => {
                 if(resto==10 || resto == 11) primeiroDigitoVerificador = 0;
                 else primeiroDigitoVerificador = resto;
                 
+                // Calculando o segundo digito verificador
                 numeros += primeiroDigitoVerificador;
                 pesos = [4, 3, 2, 7, 6, 5, 4, 3, 2];
                 soma = 0;
@@ -441,6 +448,8 @@ const validateIE = (ie, uf) => {
                 let segundoDigitoVerificador;
                 if(resto==10 || resto == 11) segundoDigitoVerificador = 0;
                 else segundoDigitoVerificador = resto;
+
+                // Comparando os digitos verificadores
                 if(primeiroDigitoVerificador == ie[8] && segundoDigitoVerificador == ie[9]) return true;
                 else return false;
             } else return false;
@@ -473,6 +482,45 @@ const validateIE = (ie, uf) => {
                 if(primeiroDigitoVerificador == ie[7] && segundoDigitoVerificador == ie[8]) return true;
                 else return false;
 
+            } else return false;
+
+        // São Paulo
+        case 'SP':
+            // It's not a bug, it's a feature.
+
+            // JK, fix this tomorrow.
+            if(ie.length==12){
+                let numeros = ie.substring(0, 8);
+                let pesos = [1, 3, 4, 5, 6, 7, 8, 10];
+                let soma = 0;
+
+                for(let i=0; i<pesos.length; i++){
+                    soma += +numeros[i] * pesos[i];
+                }
+                
+                let resto = soma % 11;
+
+                if(resto == 0 || resto== 1) primeiroDigitoVerificador = 0
+                else primeiroDigitoVerificador = 11-resto
+                
+                numeros = ie.substring(0, 11)
+                pesos = [3, 2, 10, 9, 8, 7, 6, 5, 4, 3, 2];
+                soma = 0;
+
+                for(let i=0; i<pesos.length; i++){
+                    console.log(`${numeros[i]} * ${pesos[i]}`)
+                    soma += +numeros[i] * pesos[i];
+                }
+
+                resto = soma % 11
+                let segundoDigitoVerificador;
+                if(resto==0 || resto == 1) segundoDigitoVerificador = 0;
+                else segundoDigitoVerificador = 11-resto;
+
+                console.log(primeiroDigitoVerificador, ie[8], segundoDigitoVerificador, ie[11])
+
+                if(primeiroDigitoVerificador == ie[8] && segundoDigitoVerificador == ie[11]) return true
+                else return false;
             } else return false;
 
         // Padrão
@@ -548,6 +596,10 @@ const formatIE = (ie, uf) => {
         case 'PE':
             return `${ie.substring(0, 7)}-${ie.substring(7, 9)}`;
 
+        // São Paulo
+        case 'SP':
+            return `${ie.substring(0, 3)}.${ie.substring(3, 6)}.${ie.substring(6, 9)}.${ie.substring(9, 12)}`;
+
         // Padrão
         default:
             return ie;
@@ -562,4 +614,4 @@ const validateAndFormatIE = (ie, uf) => {
     }
 }
 
-console.log(validateAndFormatIE('612231313', 'PE'));
+console.log(validateAndFormatIE('975550353980', 'SP'));
