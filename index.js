@@ -488,6 +488,7 @@ const validateIE = (ie, uf) => {
         case 'SP':
             // It's not a bug, it's a feature.
             if(ie.length==12){
+                // Calculando o primeiro digito verificador
                 let numeros = ie.substring(0, 8);
                 let pesos = [1, 3, 4, 5, 6, 7, 8, 10];
                 let soma = 0
@@ -497,6 +498,7 @@ const validateIE = (ie, uf) => {
                 let primeiroDigitoVerificador = soma % 11;
                 if(primeiroDigitoVerificador>9) primeiroDigitoVerificador = 0;
                 
+                // Calculando o segundo digito verificador
                 numeros = ie.substring(0, 11)
                 pesos = [3, 2, 10, 9, 8, 7, 6, 5, 4, 3, 2];
                 soma = 0;
@@ -504,13 +506,9 @@ const validateIE = (ie, uf) => {
                     soma += +numeros[i] * pesos[i];
                 }
                 segundoDigitoVerificador = soma % 11;
-
-                console.log(primeiroDigitoVerificador, segundoDigitoVerificador)
-
                 if(segundoDigitoVerificador>9) segundoDigitoVerificador = 0;
-
-                console.log(ie[8], primeiroDigitoVerificador, ie[11], segundoDigitoVerificador)
-
+            
+                // Verificando os digitos
                 if(ie[8] == primeiroDigitoVerificador && ie[11] == segundoDigitoVerificador) return true;
                 else return false;
             } else return false;
