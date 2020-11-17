@@ -487,39 +487,31 @@ const validateIE = (ie, uf) => {
         // São Paulo
         case 'SP':
             // It's not a bug, it's a feature.
-
-            // JK, fix this tomorrow.
             if(ie.length==12){
                 let numeros = ie.substring(0, 8);
                 let pesos = [1, 3, 4, 5, 6, 7, 8, 10];
-                let soma = 0;
-
+                let soma = 0
                 for(let i=0; i<pesos.length; i++){
                     soma += +numeros[i] * pesos[i];
                 }
-                
-                let resto = soma % 11;
-
-                if(resto == 0 || resto== 1) primeiroDigitoVerificador = 0
-                else primeiroDigitoVerificador = 11-resto
+                let primeiroDigitoVerificador = soma % 11;
+                if(primeiroDigitoVerificador>9) primeiroDigitoVerificador = 0;
                 
                 numeros = ie.substring(0, 11)
                 pesos = [3, 2, 10, 9, 8, 7, 6, 5, 4, 3, 2];
                 soma = 0;
-
                 for(let i=0; i<pesos.length; i++){
-                    console.log(`${numeros[i]} * ${pesos[i]}`)
                     soma += +numeros[i] * pesos[i];
                 }
+                segundoDigitoVerificador = soma % 11;
 
-                resto = soma % 11
-                let segundoDigitoVerificador;
-                if(resto==0 || resto == 1) segundoDigitoVerificador = 0;
-                else segundoDigitoVerificador = 11-resto;
+                console.log(primeiroDigitoVerificador, segundoDigitoVerificador)
 
-                console.log(primeiroDigitoVerificador, ie[8], segundoDigitoVerificador, ie[11])
+                if(segundoDigitoVerificador>9) segundoDigitoVerificador = 0;
 
-                if(primeiroDigitoVerificador == ie[8] && segundoDigitoVerificador == ie[11]) return true
+                console.log(ie[8], primeiroDigitoVerificador, ie[11], segundoDigitoVerificador)
+
+                if(ie[8] == primeiroDigitoVerificador && ie[11] == segundoDigitoVerificador) return true;
                 else return false;
             } else return false;
 
@@ -614,4 +606,4 @@ const validateAndFormatIE = (ie, uf) => {
     }
 }
 
-console.log(validateAndFormatIE('975550353980', 'SP'));
+console.log(validateAndFormatIE('504052427031', 'SP'));
